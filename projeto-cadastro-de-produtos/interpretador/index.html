@@ -1,0 +1,122 @@
+<script>
+  
+  
+  const precedencia = "+%-*/";  
+  const operadores = /[^\d()]+|[\d.]+/g;
+  const numeros = /\d+/g;
+  const espacoEmBranco = / /g;
+  
+  //----------------------------------------------------------//
+  
+  function geraTokens(instrucao) {     
+    // Retira os espaços em branco
+    instrucao = instrucao.replace(/\s+/g, '');    
+    // Retorna os tokens
+    return instrucao.match(operadores);
+    
+  }
+
+  //----------------------------------------------------------//
+
+  function converteLiterais(tokens) {
+    let i;
+    for(i = 0; i < tokens.length; i++) {
+      let valor = tokens[i].match(numeros);
+      if(valor != null) 
+        tokens[i] = parseFloat(tokens[i], 10);      
+    }
+    return tokens;
+  }
+  
+  //----------------------------------------------------------//
+
+  function executar(tokens) {
+    // Se o array de tokens só tiver um único elemento,
+    // esse representa o resultado.
+    if(tokens.length == 1) {
+      if(typeof tokens[0] != 'number')  
+        throw new Error("Erro Sintático #1");        
+      return tokens[0];
+    }
+      
+    // Esta variável indicará a posição do operador com maior precedência.
+    // Ao final, a variável posOpMaiorPrecedencia indicará a posição do 
+    // operador com maior precedência.
+    let posOpMaiorPrecedencia = -1;
+    
+    // Vou percorrer os tokens e descobrir qual é o operador com maior precedência
+    for(i = 0; i < tokens.length; i++) {
+      // Se o token não é string, é porque representa uma literal numérica
+      if(typeof tokens[i] != 'string')
+        continue;
+      // Se o token é uma string, então é um operador.
+      let operadorAtual = tokens[i].match(operadores);
+      // Se é um operador
+      if(operadorAtual != null) {
+        // Se ainda não defini o operador com maior precedência
+        if(posOpMaiorPrecedencia == -1) {
+          // Guardo a posição do operador
+          posOpMaiorPrecedencia = i;
+        }
+        else {
+          if(precedencia.indexOf(operadorAtual) > precedencia.indexOf(posOpMaiorPrecedencia)) {
+            posOpMaiorPrecedencia = i;
+          }          
+        }          
+      }
+    }
+        
+    // Se não encontrei um operador, erro sintático
+    if(posOpMaiorPrecedencia <= 0 || posOpMaiorPrecedencia == tokens.length - 1)
+      throw new Error("Erro Sintático #2");
+
+    // Se o operando à esquerda não é um número, erro sintático
+    let operando1 = tokens[posOpMaiorPrecedencia-1];
+    if(typeof operando1 != 'number')
+      throw new Error("Erro Sintático #3: "+ operando1);
+        
+    // Se o operando à direita não é um número, erro sintático
+    let operando2 = tokens[posOpMaiorPrecedencia+1];
+    if(typeof operando2 != 'number')
+      throw new Error("Erro Sintático #4:" + operando2);
+        
+    // Pego o operador com maior precedência
+    let operador = tokens[posOpMaiorPrecedencia];
+    let resultado;        
+    // Executo a operação
+    if(operador == '/') 
+      resultado = operando1 / operando2;
+    else if(operador == '*') 
+      resultado = operando1 * operando2;
+    else if(operador == '%') 
+      resultado = operando1 % operando2;
+    else if(operador == '-') 
+      resultado = operando1 - operando2;
+    else if(operador == '+') 
+      resultado = operando1 + operando2;
+    // Guardo o resultado onde estava o operador com a maior precedência
+    tokens[posOpMaiorPrecedencia] = resultado;
+    // Retiro os operandos da expressão
+    tokens.splice(posOpMaiorPrecedencia-1,1);
+    tokens.splice(posOpMaiorPrecedencia,1);
+    // Solicito que volte a processar a expressão.
+    return executar(tokens);
+  }
+  
+  //----------------------------------------------------------//
+  
+  var declaracaoVariaveis = "i = 10, j = 20"
+  var instrucao = "7.1*j+5-i/3";
+  
+  var tokens = geraTokens(instrucao);
+  
+  tokens = converteLiterais(tokens);
+  try {
+    alert("A expressão " + instrucao + " é igual a " + executar(tokens));
+    alert(valor);
+  }
+  catch(e) {
+    alert(e);
+  }
+  
+</script>
