@@ -6,6 +6,7 @@ export default class Produto {
   // DECLARAÇÃO DE ATRIBUTOS PRIVADOS: Em JavaScript, se o nome do atributo tem # no início, isso 
   // indica que ele é privado. Também deve-se colocar a presença dele destacada, como está abaixo.
   //
+  
   #id;
   #nome;
   #fabricante;
@@ -31,8 +32,8 @@ export default class Produto {
   //-----------------------------------------------------------------------------------------//
 
   setID(id) {
-    if(!Produto.validarID(id))
-      throw new ModelError("Matrícula Inválida: " + id);
+    /*if(!Produto.validarID(id))
+      throw new ModelError("Matrícula Inválida: " + id);*/
     this.#id = id;
   }
   
@@ -46,8 +47,8 @@ export default class Produto {
   //-----------------------------------------------------------------------------------------//
 
   setNome(nome) {
-    if(!Produto.validarNome(nome))
-      throw new ModelError("Nome Inválido: " + nome);
+    /*if(!Produto.validarNome(nome))
+      throw new ModelError("Nome Inválido: " + nome);*/
     this.#nome = nome;
   }
   
@@ -61,8 +62,8 @@ export default class Produto {
   //-----------------------------------------------------------------------------------------//
 
   setFabricante(fabricante) {
-    if(!Produto.validaFabricante(fabricante))
-      throw new ModelError("Fabricante Inválido: " + fabricante);
+    /*if(!Produto.validaFabricante(fabricante))
+      throw new ModelError("Fabricante Inválido: " + fabricante);*/
     this.#fabricante = fabricante;
   }
   
@@ -74,22 +75,22 @@ export default class Produto {
   //-----------------------------------------------------------------------------------------//
 
   setCategoria(categoria) {
-    if(!Produto.validarEmail(categoria))
-      throw new ModelError("Categoria inválido: " + categoria);
+    /*if(!Produto.validarEmail(categoria))
+      throw new ModelError("Categoria inválido: " + categoria);*/
     this.#categoria = categoria;
   }
   
   //-----------------------------------------------------------------------------------------//
 
-  getTelefone() {
-    return this.#telefone;
+  getPreco() {
+    return this.#preco;
   }
   
   //-----------------------------------------------------------------------------------------//
 
-  setTelefone(preco) {
-    if(!Produto.validarTelefone(preco))
-      throw new ModelError("Telefone inválido: " + preco);
+  setPreco(preco) {
+    /*if(!Produto.validarTelefone(preco))
+      throw new ModelError("Telefone inválido: " + preco);*/
     this.#preco = preco;
   }
   
